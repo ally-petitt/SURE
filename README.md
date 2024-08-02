@@ -32,7 +32,7 @@ Combined, the data collected from this research informs the ideal matrix sparsit
 ### Technologies Used
 * [CUDA v12.5](https://docs.nvidia.com/cuda/) to facillitate lower-level interaction with the GPU.
 * Matrix manipulation operations imported from the [cuBLAS API](https://docs.nvidia.com/cuda/cublas/).
-* [PyTorch] built-in matrix inversion functionality as a benchmark to compare developed CUDA kernel against.
+* [PyTorch](https://pytorch.org/) built-in matrix inversion functionality as a benchmark to compare developed CUDA kernel against.
 * [OpenMPI](https://www.open-mpi.org/) to parallelize GPU computations across multiple nodes.
 
 
