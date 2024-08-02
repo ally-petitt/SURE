@@ -5,10 +5,12 @@ This repository contains code and data collected during the Chevron Summer Under
 
 
 ## Table of Contents
-* [Example](#sure-project-objective)
-2. [Example2](#example2)
-3. [Third Example](#third-example)
-4. [Fourth Example](#fourth-examplehttpwwwfourthexamplecom)
+1. [SURE Project Overview](#sure-project-overview)
+    * [Background](#background)
+    * [Objective](#objective)
+2. [Matrix Manipulation and GPU Parallelization](#Matrix-Manipulation-and-GPU-Parallelization)
+    * [Program Overview](#program-overview)
+    * [Build and Run Instructions](#build-and-run-instructions)
 
 
 # SURE Project Overview
