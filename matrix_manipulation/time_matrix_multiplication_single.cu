@@ -9,7 +9,7 @@
 #include <cublas_v2.h>
 #include <cuda_runtime.h>
 
-// export PROGRAM=time_matrix_multiplication_single.cu
+// export PROGRAM=time_matrix_multiplication_single
 // nvcc -c $PROGRAM.cu -o $PROGRAM.o && mpic++ -o $PROGRAM $PROGRAM.o -lcudart -L/usr/local/cuda/lib64 -I/usr/local/cuda/include
 // mpirun -n1 ./$PROGRAM
 
