@@ -46,20 +46,17 @@ int main(int argc, char *argv[]) {
 
 
     for (int i = 1; i <= 85; i++) {
-	    int m, n, matrix_size, lda, ldc, batch_size;
-	    
-	    m = n = batch_size = lda = ldc = matrix_size = 50 * i;
-	    printf("Matrix size: %d: ", matrix_size);
+	    int n = 50 * i;
+	    printf("Matrix size: %d: ", n);
 	    
 
-	    const std::vector<data_type> A = generateRandomMatrix(matrix_size); // initialize source matrix
-	    const std::vector<data_type> C_ = generateRandomMatrix(matrix_size); // initialize destination matrix
-        const std::vector<data_type> Info = generateRandomMatrix((int) batch_size); // vector containing info on our matrix inversions
-	    
-	    std::vector<data_type> C(m * n);
+	    const std::vector<data_type> A = generateRandomMatrix(n); // initialize source matrix
+	    const std::vector<data_type> C = generateRandomMatrix(n); // initialize destination matrix
+        const std::vector<data_type> Info = generateRandomMatrix((int) n); // vector containing info on our matrix inversions
+
 
 	    data_type *d_A = nullptr;
-	    data_type *d_Pivot = nullptr;
+	    data_type *d_C = nullptr;
         data_type *d_Info = nullptr;
 
 	    /* step 1: create cublas handle, bind a stream */
@@ -70,7 +67,7 @@ int main(int argc, char *argv[]) {
 
 	    /* step 2: copy data to device */
 	    (cudaMalloc(reinterpret_cast<void **>(&d_A), sizeof(data_type) * A.size()));
-	    (cudaMalloc(reinterpret_cast<void **>(&d_C), sizeof(data_type) * C_.size()));
+	    (cudaMalloc(reinterpret_cast<void **>(&d_C), sizeof(data_type) * C.size()));
         (cudaMalloc(reinterpret_cast<void **>(&d_Info), sizeof(data_type) * Info.size()));
 
 	    (cudaMemcpyAsync(d_A, A.data(), sizeof(data_type) * A.size(), cudaMemcpyHostToDevice,
@@ -83,14 +80,14 @@ int main(int argc, char *argv[]) {
 	    (cublasDmatinvBatched(cublasH, 
                             n, 
                             (const double *const *) d_A, 
-                            lda, 
+                            n, 
                             (double *const *)d_C, 
-                            ldc, 
+                            n, 
                             (int *)d_Info, 
-                            batch_size));
+                            n));
 
 	    /* step 4: copy data to host */
-	    (cudaMemcpyAsync((void *)C_.data(), d_C, sizeof(data_type) * C_.size(), cudaMemcpyDeviceToHost,
+	    (cudaMemcpyAsync((void *)C.data(), d_C, sizeof(data_type) * C.size(), cudaMemcpyDeviceToHost,
 				       stream));
 
         cudaStreamSynchronize(stream);
@@ -103,7 +100,7 @@ int main(int argc, char *argv[]) {
 	    /* free resources */
 	    (cudaFree(d_A));
 	    (cudaFree(d_Info));
-        cudaFree(d_Pivot);
+        cudaFree(d_C);
 
         
 
@@ -113,7 +110,7 @@ int main(int argc, char *argv[]) {
             // Handle error appropriately
         }
 	            
-	    fprintf(output_file, "%d,%Lf\n", matrix_size, num_seconds);
+	    fprintf(output_file, "%d,%Lf\n", n, num_seconds);
 
     }
 
