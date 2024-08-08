@@ -11,6 +11,8 @@ This repository contains code and data collected during the Chevron Summer Under
 2. [Matrix Manipulation and GPU Parallelization](#Matrix-Manipulation-and-GPU-Parallelization)
     * [Program Overview](#program-overview)
     * [Build and Run Instructions](#build-and-run-instructions)
+3. [Optimization Algorithms](#optimization-algorithms)
+    * [Branch and Bound](#branch-and-bound)
 
 
 # SURE Project Overview
@@ -104,4 +106,21 @@ pip install torch csv
 The Python file can be executed as follows:
 ```
 python ./pytorch_time_matrix_inversion.py
+```
+
+# Optimization Algorithms
+This section details an optimization algorithm explored and implemented in this research project. 
+
+## Branch and Bound
+[Branch and bound](https://en.wikipedia.org/wiki/Branch_and_bound) is an optimization algorithm that breaks a large problem down into sub-problems and uses a set of constraints, or bounds, to prune sub-problems that cannot contain an optimial solution. An infamous use of this algorithm is to solve the "[knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem)" which is described as follows:
+
+> Given a set of items, each with a weight and a value, determine which items to include in the collection so that the total weight is less than or equal to a given limit and the total value is as large as possible.
+
+The branch and bound program developed in this project, `./branch_and_bound/bb.cu`, solves the knapsack problem in CUDA given a set of 30 items with their respective weights and values. Due to research time constraints, however, node pruning in this program is currently not functioning as intended, resulting in slower execution time. 
+
+To build and execute the program the following commands are to be run:
+
+```
+nvcc ./branch_and_bound/bb.cu -o bb -I/usr/inlcude/c++/10
+./bb
 ```
